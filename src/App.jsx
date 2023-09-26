@@ -39,8 +39,8 @@ function App () {
 
   return (
     <div>
-      <nav>
-        <button onClick={() => handlePageChange('contacts')}>Contacts</button>
+      <nav style={{display:"flex", justifyContent: 'flex-end', marginTop:"20px"}}>
+        <button style={{marginRight:"10px"}} onClick={() => handlePageChange('contacts')}>Contacts</button>
         <button onClick={() => handlePageChange('formAddContacts')}>Add Contacts</button>
       </nav>
       {page === 'contacts' && <Contacts contacts={contacts} deleteContact={deleteContact} />}

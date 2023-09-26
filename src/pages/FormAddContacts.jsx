@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './formAddContacts.css';
 
 function FormAddContacts ({ addContact,  handlePageChange }) {
   const [name, setName] = useState('');
@@ -23,7 +24,7 @@ function FormAddContacts ({ addContact,  handlePageChange }) {
   };
 
   return (
-    <div>
+    <div style={{minWidth: "500px"}}>
       <h1>Add contact</h1>
       <form onSubmit={handleSubmit}>
         <input
