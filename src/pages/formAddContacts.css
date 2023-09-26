@@ -1,0 +1,16 @@
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+input {
+    min-width: 200px;
+    min-height: 30px;
+    margin-bottom: 5px;
+}
+
+button {
+    margin-bottom: 5px;
+    min-width: 10px;
+    padding-block: 2px;
+}

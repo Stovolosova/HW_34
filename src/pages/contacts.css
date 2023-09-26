@@ -1,0 +1,13 @@
+table {
+    border: 2px solid gray;
+    border-radius: 8px;
+    margin: 50px auto;
+}
+
+thead {
+    background-color: #827f7f;
+}
+
+tbody {
+    background-color: #3f3d3d;
+}
