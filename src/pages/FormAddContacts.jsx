@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './formAddContacts.css';
 
-function FormAddContacts ({ addContact,  handlePageChange }) {
+function FormAddContacts ({ addContact, handlePageChange }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -46,12 +46,10 @@ function FormAddContacts ({ addContact,  handlePageChange }) {
           onChange={(e) => setPhone(e.target.value)}
         />
         <button type="submit">Save</button>
-        <button type="button" onClick={() => handlePageChange('contacts')}>Cancel</button>
+        <button type="button" onClick={handlePageChange}>Cancel</button>
       </form>
     </div>
   );
 };
 
 export default FormAddContacts;
-
-

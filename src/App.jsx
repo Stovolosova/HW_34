@@ -7,6 +7,7 @@ import FormEditContacts from './pages/FormEditContacts';
 function App () {
   const [page, setPage] = useState('contacts');
   const [contacts, setContacts] = useState([]);
+  const [selectedContact, setSelectedContact] = useState(null);
 
   useEffect(() => {
     const storedContacts = localStorage.getItem('contacts');
@@ -36,8 +37,10 @@ function App () {
   };
 
   const handlePageChange = (newPage) => {
-    setPage(newPage);
-  };
+   
+      setPage(newPage);
+    
+  }
 
   const updateContact = updatedContact => {
     const updatedContacts = contacts.map(contact => 
@@ -54,9 +57,9 @@ function App () {
           <Link to="/add">Add Contacts</Link>
         </nav>
       <Routes>
-        <Route exact path="/contacts" element={<Contacts contacts={contacts} deleteContact={deleteContact} />} />
-        <Route path="/add" element={<FormAddContacts addContact={addContact} />} />
-        <Route path="/edit/:id" element={<FormEditContacts addContact={addContact} handlePageChange={handlePageChange} updateContact={updateContact} />} />
+        <Route exact path="/contacts" element={<Contacts contacts={contacts} deleteContact={deleteContact} editContact={setSelectedContact} handlePageChange={handlePageChange} />} />
+        <Route path="/add" element={<FormAddContacts addContact={addContact} handlePageChange={handlePageChange} />} />
+        <Route path="/edit/:id" element={<FormEditContacts selectedContact={selectedContact} updateContact={updateContact} handlePageChange={handlePageChange} />} />
       </Routes>
       </div>
     </Router>
@@ -64,7 +67,3 @@ function App () {
 };
 
 export default App;
-
-
-
-

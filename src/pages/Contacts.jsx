@@ -4,10 +4,10 @@ import { Link } from "react-router-dom";
 import FormEditContacts from "./FormEditContacts";
 import './contacts.css';
 
-function Contacts ({ contacts, deleteContact, updateContact }) {
+function Contacts ({ contacts, deleteContact, editContact, updateContact }) {
   const [allContacts, setAllContacts] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [selectedContact, setSelectedContact] = useState();
+  const [selectedContact, setSelectedContact] = useState(null);
 
   useEffect(() => {
     setAllContacts(contacts);
@@ -19,22 +19,19 @@ function Contacts ({ contacts, deleteContact, updateContact }) {
   }
 
   const closeModal = () => {
-    setSelectedContact(null);
+   setSelectedContact(null);
     setModalIsOpen(false);
   }
 
   const confirmDeleteContact = () => {
-    if (selectedContact) {
+   if (selectedContact) {
       deleteContact(selectedContact.id);
       setModalIsOpen(false);
-      setSelectedContact(null);
     }
   }
 
-  const handlePageChange = (page) => {
-    if(page === 'contacts') {
-        setSelectedContact(null);
-    }
+  const handleEdit = (contact) => {
+    editContact(contact);
   }
 
   return (
@@ -55,7 +52,7 @@ function Contacts ({ contacts, deleteContact, updateContact }) {
               <td>{contact.email}</td>
               <td>{contact.phone}</td>
               <td>
-                <Link to={`/edit/${contact.id}`}>Edit</Link>
+                <Link to={`/edit/${contact.name}`} onClick={() => handleEdit(contact)}>Edit</Link>
                 <button onClick={() => openModal(contact)}>Delete</button>
               </td>
             </tr>
@@ -78,20 +75,15 @@ function Contacts ({ contacts, deleteContact, updateContact }) {
       >
         <h2>Delete Contact</h2>
         {selectedContact && (
-          <p>Are you sure you want to delete {selectedContact.name} ?</p>
+          <p>Are you sure you want to delete {selectedContact.name}?</p>
         )}
         <div>
-          <button onClick={() => confirmDeleteContact(selectedContact.id)}>Yes</button>
+          <button onClick={confirmDeleteContact}>Yes</button>
           <button onClick={closeModal}>No</button>
         </div>
       </Modal>
-      {selectedContact && <FormEditContacts 
-      contact={selectedContact} 
-      updateContact={updateContact} 
-      handlePageChange={handlePageChange} />}
     </div>
   );
 };
 
 export default Contacts;
-
