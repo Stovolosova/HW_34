@@ -1,30 +1,37 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import './formAddContacts.css';
+import { Navigate } from 'react-router-dom';
 
-function FormAddContacts ({ addContact, handlePageChange }) {
+function FormAddContacts({ addContact }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const dispatch = useDispatch();
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     const newContact = {
       name: name,
       email: email,
-      phone: phone
+      phone: phone,
     };
 
     addContact(newContact);
+
+    dispatch({ type: 'SET_PAGE', payload: 'contacts' });
     setName('');
     setEmail('');
     setPhone('');
+  };
 
-    handlePageChange('contacts'); 
+  const handleCancel = () => {
+    window.location.href = '/contacts';
   };
 
   return (
-    <div style={{minWidth: "500px"}}>
+    <div style={{ minWidth: '500px' }}>
       <h1>Add contact</h1>
       <form onSubmit={handleSubmit}>
         <input
@@ -46,10 +53,12 @@ function FormAddContacts ({ addContact, handlePageChange }) {
           onChange={(e) => setPhone(e.target.value)}
         />
         <button type="submit">Save</button>
-        <button type="button" onClick={handlePageChange}>Cancel</button>
+        <button type="button" onClick={handleCancel}>
+          Cancel
+        </button>
       </form>
     </div>
   );
-};
+}
 
 export default FormAddContacts;

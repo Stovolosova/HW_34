@@ -1,38 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import Modal from 'react-modal';
-import { Link } from "react-router-dom";
-import FormEditContacts from "./FormEditContacts";
 import './contacts.css';
 
-function Contacts ({ contacts, deleteContact, editContact, updateContact }) {
-  const [allContacts, setAllContacts] = useState([]);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [selectedContact, setSelectedContact] = useState(null);
-
-  useEffect(() => {
-    setAllContacts(contacts);
-  }, [contacts]);
+function Contacts({ deleteContact, editContact }) {
+  // const { contacts, selectedContact } = useSelector(state => state);
+  const contacts = useSelector(state => state.contacts);
+  const selectedContact = useSelector(state => state.selectedContact);
 
   const openModal = (contact) => {
-    setSelectedContact(contact);
-    setModalIsOpen(true);
-  }
+    editContact({ type: 'SET_SELECTED_CONTACT', payload: contact });
+  };
 
   const closeModal = () => {
-   setSelectedContact(null);
-    setModalIsOpen(false);
-  }
+    editContact({ type: 'SET_SELECTED_CONTACT', payload: null });
+  };
 
   const confirmDeleteContact = () => {
-   if (selectedContact) {
+    if (selectedContact) {
       deleteContact(selectedContact.id);
-      setModalIsOpen(false);
+      closeModal();
     }
-  }
+  };
 
   const handleEdit = (contact) => {
-    editContact(contact);
-  }
+    editContact({ type: 'SET_SELECTED_CONTACT', payload: contact });
+  };
 
   return (
     <div>
@@ -46,8 +40,8 @@ function Contacts ({ contacts, deleteContact, editContact, updateContact }) {
           </tr>
         </thead>
         <tbody>
-          {allContacts.map(contact => (
-            <tr  key={contact.id}>
+          {contacts.map((contact) => (
+            <tr key={contact.id}>
               <td>{contact.name}</td>
               <td>{contact.email}</td>
               <td>{contact.phone}</td>
@@ -60,21 +54,21 @@ function Contacts ({ contacts, deleteContact, editContact, updateContact }) {
         </tbody>
       </table>
       <Modal
-        isOpen={modalIsOpen}
+        isOpen={!!selectedContact}
         onRequestClose={closeModal}
         contentLabel="Delete Contact"
         style={{
-            overlay: {
-                backgroundColor: 'none',
-            },
-            content: {
-              background: 'rgb(98 93 93)',
-              inset: '200px',
-            }
-          }}
+          overlay: {
+            backgroundColor: 'none',
+          },
+          content: {
+            background: 'rgb(98 93 93)',
+            inset: '200px',
+          },
+        }}
       >
         <h2>Delete Contact</h2>
-        {selectedContact && (
+        {!!selectedContact && (
           <p>Are you sure you want to delete {selectedContact.name}?</p>
         )}
         <div>
@@ -84,6 +78,6 @@ function Contacts ({ contacts, deleteContact, editContact, updateContact }) {
       </Modal>
     </div>
   );
-};
+}
 
 export default Contacts;

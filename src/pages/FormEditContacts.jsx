@@ -1,9 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
-function FormEditContacts({ selectedContact, updateContact, handlePageChange }) {
+
+function FormEditContacts({ selectedContact, updateContact }) {
   const [editName, setEditName] = useState('');
   const [editEmail, setEditEmail] = useState('');
   const [editPhone, setEditPhone] = useState('');
+  const [redirect, setRedirect] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (selectedContact) {
@@ -24,7 +28,11 @@ function FormEditContacts({ selectedContact, updateContact, handlePageChange }) 
     };
 
     updateContact(updatedContact);
-    handlePageChange('contacts');
+    dispatch({ type: 'SET_PAGE', payload: 'contacts' });
+  };
+
+  const handleCancel = () => {
+    window.location.href = '/contacts';
   };
 
   return (
@@ -50,8 +58,8 @@ function FormEditContacts({ selectedContact, updateContact, handlePageChange }) 
             value={editPhone}
             onChange={(e) => setEditPhone(e.target.value)}
           />
-          <button type="submit" onClick={handlePageChange}>Save</button>
-          <button type="button" onClick={handlePageChange}>
+          <button type="submit">Save</button>
+          <button type="button" onClick={handleCancel}>
             Cancel
           </button>
         </form>
@@ -61,4 +69,3 @@ function FormEditContacts({ selectedContact, updateContact, handlePageChange }) 
 }
 
 export default FormEditContacts;
-
