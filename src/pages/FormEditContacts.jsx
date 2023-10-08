@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { updateContact } from '../store/index-toolkit';
 
-
-function FormEditContacts({ selectedContact, updateContact }) {
+function FormEditContacts({ selectedContact }) {
   const [editName, setEditName] = useState('');
   const [editEmail, setEditEmail] = useState('');
   const [editPhone, setEditPhone] = useState('');
-  const [redirect, setRedirect] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (selectedContact) {
@@ -27,12 +28,12 @@ function FormEditContacts({ selectedContact, updateContact }) {
       phone: editPhone,
     };
 
-    updateContact(updatedContact);
-    dispatch({ type: 'SET_PAGE', payload: 'contacts' });
+    dispatch(updateContact(updatedContact));
+    navigate('/contacts');
   };
 
   const handleCancel = () => {
-    window.location.href = '/contacts';
+    navigate('/contacts');
   };
 
   return (

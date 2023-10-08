@@ -1,31 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Modal from 'react-modal';
 import './contacts.css';
+import { deleteContact, setSelectedContact } from '../store/index-toolkit';
 
-function Contacts({ deleteContact, editContact }) {
-  // const { contacts, selectedContact } = useSelector(state => state);
-  const contacts = useSelector(state => state.contacts);
-  const selectedContact = useSelector(state => state.selectedContact);
+function Contacts() {
+  const contacts = useSelector((state) => state.contacts);
+  const selectedContact = useSelector((state) => state.selectedContact);
+  const dispatch = useDispatch();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = (contact) => {
-    editContact({ type: 'SET_SELECTED_CONTACT', payload: contact });
+    dispatch(setSelectedContact(contact));
+    setIsModalOpen(true);
   };
 
   const closeModal = () => {
-    editContact({ type: 'SET_SELECTED_CONTACT', payload: null });
+    dispatch(setSelectedContact(null));
+    setIsModalOpen(false);
   };
 
   const confirmDeleteContact = () => {
     if (selectedContact) {
-      deleteContact(selectedContact.id);
+      dispatch(deleteContact(selectedContact.id));
       closeModal();
     }
   };
 
   const handleEdit = (contact) => {
-    editContact({ type: 'SET_SELECTED_CONTACT', payload: contact });
+    dispatch(setSelectedContact(contact));
   };
 
   return (
@@ -46,7 +50,12 @@ function Contacts({ deleteContact, editContact }) {
               <td>{contact.email}</td>
               <td>{contact.phone}</td>
               <td>
-                <Link to={`/edit/${contact.name}`} onClick={() => handleEdit(contact)}>Edit</Link>
+                <Link
+                  to={`/edit/${contact.name}`}
+                  onClick={() => handleEdit(contact)}
+                >
+                  Edit
+                </Link>
                 <button onClick={() => openModal(contact)}>Delete</button>
               </td>
             </tr>
@@ -54,7 +63,7 @@ function Contacts({ deleteContact, editContact }) {
         </tbody>
       </table>
       <Modal
-        isOpen={!!selectedContact}
+        isOpen={isModalOpen}
         onRequestClose={closeModal}
         contentLabel="Delete Contact"
         style={{
